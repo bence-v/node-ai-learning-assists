@@ -1,0 +1,33 @@
+name: ai-learning
+
+services:
+  mongodb:
+    image: 'mongo'
+    volumes:
+      - data:/data/db
+    env_file:
+      - ./mongo.env
+  backend:
+    build: ./backend
+    ports:
+      - '8000:8000'
+    volumes:
+      - logs:/app/logs
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      - mongodb
+  frontend:
+    build: ./frontend/ai-learning-assistant
+    ports:
+      - '3000:3000'
+      - '5173:5173'
+    volumes:
+      - ./frontend/ai-learning-assistant:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+
+volumes:
+  data:
+  logs:
