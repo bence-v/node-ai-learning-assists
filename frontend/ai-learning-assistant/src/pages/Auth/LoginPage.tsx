@@ -108,8 +108,8 @@ function LoginPage(props) {
                             {loading ? (
                                 <>
                                     <div className="w-4 h-4 border border-white/30 border-t-white rounded-full animate-spin">
-                                        Signing in...
                                     </div>
+                                    Signing in...
                                 </>
                             ): (
                                 <>

@@ -44,8 +44,25 @@ This application is built for:
 - Node.js (v16+)
 - MongoDB instance (local or MongoDB Atlas)
 - Google Gemini API Key
+- **Docker & Docker Compose** (Optional, for containerized setup)
 
-### Installation
+### 🐳 Running with Docker (Recommended)
+
+The easiest way to run the entire application stack is using Docker Compose.
+
+1. **Setup Environment Variables:**
+   - Create a `.env` file in the `backend` folder containing your `GEMINI_API_KEY` and `JWT_SECRET`.
+   - Create a `mongo.env` file in the root folder with your MongoDB credentials (if required by your configuration).
+2. **Start the application:**
+   - From the root directory of the project, run:
+     ```bash
+     docker-compose up -d --build
+     ```
+3. **Access the application:**
+   - Frontend: `http://localhost:3000` (or `http://localhost:5173` depending on your Vite/React config)
+   - Backend API: `http://localhost:8000`
+
+### 💻 Manual Installation
 
 1. **Clone the repository**
 2. **Setup Backend:**
@@ -54,7 +71,7 @@ This application is built for:
    - Create a `.env` file with your `MONGO_URI`, `JWT_SECRET`, `PORT`, and `GEMINI_API_KEY`.
    - Start the server using `npm run dev` or `npm start`.
 3. **Setup Frontend:**
-   - Navigate to the frontend directory (`frontened/ai-learning-assitant`).
+   - Navigate to the frontend directory (`frontend/ai-learning-assistant`).
    - Run `npm install`.
    - Start the development server using `npm run dev`.
 
