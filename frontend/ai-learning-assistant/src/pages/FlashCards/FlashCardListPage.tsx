@@ -33,7 +33,7 @@ function FlashCardListPage(props) {
         if(flashcardSets.length === 0) {
             return (
                 <EmptyState
-                    title="no Flashcard Sets Found"
+                    title="No Flashcard Sets Found"
                     description="You haven't generated any flashcards yet. Go to a document to create your first one."
                     />
             );

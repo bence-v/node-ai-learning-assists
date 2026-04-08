@@ -26,12 +26,59 @@ const DashboardPage = (props) => {
     }, []);
 
     if(loading) {
-        return <Spinner />;
+        return (
+            <div className="min-h-screen" role="status">
+                <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px] opacity-30 pointer-events-none"></div>
+
+                <div className="relative max-w-7xl mx-auto">
+                    {/* Header */}
+                    <div className="mb-6">
+                        <h1 className="text-2xl font-medium text-slate-900 tracking-tight mb-2">Dashboard</h1>
+                        <p className="text-slate-500 text-sm">Track your learning progress and activity</p>
+                    </div>
+
+                    {/* Stats Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-5">
+                        {[...Array(3)].map((_, index) => (
+                        <div key={index}
+                         className="group relative animate-pulse bg-white/80 backdrop-blur-xl border border-slate-200/60 rounded-2xl shadow-xl shadow-slate-200/50 p-6 hover:shadow-2xl hover:shadow-slate-300/50 transition-all duration-300 hover:-translate-y-1">
+                            <div className="flex items-center justify-between">
+                                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                                    <div className="h-2 bg-neutral-200 rounded-full w-28"></div>
+                                </span>
+                                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+                                    <div className="w-5 h-5 text-neutral-200" strokeWidth={2} />
+                                </div>
+                            </div>
+                            <div className="text-3xl font-semibold text-slate-900 tracking-tight mt-4">
+                                <div className="h-8 bg-neutral-200 rounded-md w-7"></div>
+                            </div>
+                        </div>
+                        ))}
+                    </div>
+                    <div className="bg-white rounded-2xl shadow-sm border border-slate-200/60 p-6 animate-pulse">
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+                                <div className="w-5 h-5 text-neutral-200" strokeWidth={2} />
+                            </div>
+                            <h3 className="text-xl font-medium text-slate-900 tracking-tight">
+                                <div className="h-8 bg-neutral-200 rounded-md w-20 my-2"></div>
+                            </h3>
+                        </div>
+                        <div className="text-center">
+                            <div className="h-2 bg-neutral-200 rounded-md w-70 my-2"></div>
+                            <div className="h-2 bg-neutral-200 rounded-md w-110 my-2"></div>
+                            <div className="h-2 bg-neutral-200 rounded-md w-90 my-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>);
     }
 
-    if(!dashboardData || !dashboardData.overview) {
+    if (!dashboardData || !dashboardData.overview) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 flex items-center justify-center">
+            <div
+                className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 flex items-center justify-center">
                 <div className="text-center">
                     <div className="inline-flex items-center justify-center w-16 h-15 rounded-2xl bg-slate-100 mb-4">
                         <TrendingUpIcon className="w-8 h-8 text-slate-400" />

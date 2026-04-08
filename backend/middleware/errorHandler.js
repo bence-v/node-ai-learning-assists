@@ -1,10 +1,10 @@
 
 const errorHandler = (err,req,res,next) => {
-    let statusCode = err.statisCode || 500;
+    let statusCode = err.statusCode || 500;
     let message = err.message || 'Server error';
 
     //Mongoose bad ObjectId
-    if(!err.name === 'CastError') {
+    if(err.name === 'CastError') {
         message = 'Resource not found';
         statusCode = 404;
     }
@@ -19,12 +19,12 @@ const errorHandler = (err,req,res,next) => {
     //Mongoose validation error
     if(err.name === 'ValidationError') {
         message = Object.values(err.errors).map(val => val.message).join(', ');
-        statusCode = 404;
+        statusCode = 400;
     }
 
     // Multer filter error
     if(err.code === 'LIMIT_FILE_SIZE') {
-        message = "File size exceeds the mxiumum limit of 10MB";
+        message = "File size exceeds the maximum limit of 10MB";
         statusCode = 400;
     }
 

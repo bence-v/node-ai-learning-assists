@@ -10,46 +10,42 @@ const axiosInstance = axios.create({
     },
 });
 
+// Request interceptor
 axiosInstance.interceptors.request.use(
     (config) => {
         const accessToken = localStorage.getItem("token");
-            if (accessToken) {
-                config.headers.Authorization = `Bearer ${accessToken}`;
-            }
-            return config;
-        },
+        if (accessToken) {
+            config.headers.Authorization = `Bearer ${accessToken}`;
+        }
+        return config;
+    },
     (error) => {
         return Promise.reject(error);
     }
 );
 
-axiosInstance.interceptors.request.use(
+// Response interceptor for axiosInstance
+axiosInstance.interceptors.response.use(
     (response) => {
         return response;
     },
     (error) => {
         if(error.response) {
-            if(error.response.status === 500) {
+            // Check for 401 Unauthorized
+            if(error.response.status === 401) {
+                console.error("Unauthorized! Token may be expired or invalid.");
+                // Clear storage and redirect to login
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+                // Avoid infinite redirect loops if already on login page
+                if (window.location.pathname !== '/login') {
+                    window.location.href = '/login';
+                }
+            } else if(error.response.status === 500) {
                 console.error("Server error. Please try again later.");
             }
         } else if(error.code === "ECONNABORTED") {
             console.error("Request timeout. Please try again.");
-        }
-        return Promise.reject(error);
-    }
-)
-
-axios.interceptors.response.use(
-    (response) => {
-        return response;
-    },
-    (error) => {
-        if(error.response) {
-            if(error.response.status === 500) {
-                console.log("Server error. Please try again later.");
-            } else if(error.code === "ECONNABORTED") {
-                console.log("Request timeout. Please try again.");
-            }
         }
         return Promise.reject(error);
     }
