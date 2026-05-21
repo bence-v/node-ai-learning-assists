@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import {useParams, Link} from "react-router-dom"
 import {ArrowLeft, Plus, ChevronLeft, ChevronRight, Trash2} from "lucide-react";
 import toast from "react-hot-toast";
@@ -11,7 +11,6 @@ import EmptyState from "../../components/common/EmptyState";
 import Button from "../../components/common/Button";
 import Modal from "../../components/common/Modal";
 import Flashcard from "../../components/flashcards/Flashcard";
-import flashcard from "../../components/flashcards/Flashcard";
 
 function FlashcardPage(props) {
     const {id: documentId } = useParams();
@@ -28,7 +27,7 @@ function FlashcardPage(props) {
         setLoading(true);
         try {
             const response = await flashcardService.getFlashcardsForDocument(documentId);
-            setFlashcards(response.data);
+            setFlashcardSets(response.data[0]);
             setFlashcards(response.data[0]?.cards || []);
         } catch (error) {
             toast.error("Failed to fetch flashcards");

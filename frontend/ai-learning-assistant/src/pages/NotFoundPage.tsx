@@ -1,8 +1,8 @@
-import React from 'react';
-
-function NotFoundPage(props) {
+const NotFoundPage = (props) => {
     return (
-        <div>NotFoundPage</div>
+        <div>
+            <h2>404 - The page was not found!</h2>
+        </div>
     );
 }
 

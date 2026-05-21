@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import {Plus, Upload, Trash2, FileText, X} from "lucide-react";
 import toast from "react-hot-toast";
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import {useNavigate} from "react-router-dom";
 import {BookOpen, Sparkles, TrendingUp} from 'lucide-react';
 import moment from "moment";

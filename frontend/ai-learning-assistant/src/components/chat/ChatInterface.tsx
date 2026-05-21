@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {Send, MessageSquare, Sparkles} from 'lucide-react';
 import {useParams} from 'react-router-dom';
 import aiService from '../../services/aiService';
@@ -101,7 +101,7 @@ const ChatInterface = () => {
         );
     };
 
-    if(false) {
+    if(initialLoading) {
         return (
             <div className="flex flex-col h-[70vh] bg-white/80 backdrop-blur-xl border border-slate-200/60 rounded-2xl items-center justify-center shadow-xl shadow-slate-200/50">
                 <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-emerald-200 to-teal-100 flex items-center justify-center mb-4">

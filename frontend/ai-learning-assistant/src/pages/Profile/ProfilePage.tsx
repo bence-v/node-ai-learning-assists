@@ -1,9 +1,8 @@
-import React, {useState, useEffect, use} from 'react';
+import {useState, useEffect} from 'react';
 import PageHeader from "../../components/common/PageHeader";
 import Button from "../../components/common/Button";
 import Spinner from "../../components/common/Spinner";
 import authService from "../../services/authService";
-import {useAuth} from "../../context/AuthContext";
 import toast from "react-hot-toast";
 import {User,Mail,Lock} from "lucide-react";
 

@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import { Plus, Trash2 } from 'lucide-react';
+import {useState, useEffect} from 'react';
+import { Plus } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 import quizService from '../../services/quizService';

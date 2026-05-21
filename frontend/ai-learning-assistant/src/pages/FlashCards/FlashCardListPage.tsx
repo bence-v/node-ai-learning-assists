@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import flashcardService from '../../services/flashcardService';
 import PageHeader from "../../components/common/PageHeader";
 import Spinner from "../../components/common/Spinner";
