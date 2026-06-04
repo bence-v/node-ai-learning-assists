@@ -12,14 +12,14 @@ export const getQuizzes = async (req, res, next) => {
             documentId: req.params.documentId
         })
             .populate('documentId', 'title fileName')
-            .sort({reatedAt: -1});
+            .sort({createdAt: -1});
 
         res.status(200).json({
             success: true,
             count: quizzes.length,
             data: quizzes
         });
-    } catch(error) {
+    } catch (error) {
         next(error);
     }
 }
@@ -29,17 +29,17 @@ export const getQuizzes = async (req, res, next) => {
  * @route GET /api/quizzes/:id
  * @access Private
  */
-export const getQuizById = async (req,res,next) => {
+export const getQuizById = async (req, res, next) => {
     try {
         const quiz = await Quiz.findOne({
             _id: req.params.id,
             userId: req.user._id
         });
 
-        if(!quiz) {
+        if (!quiz) {
             return res.status(404).json({
                 success: false,
-                error: "Quiz was not found",
+                error: "Quiz was not found.",
                 statusCode: 404
             });
         }
@@ -48,7 +48,7 @@ export const getQuizById = async (req,res,next) => {
             success: true,
             data: quiz
         });
-    } catch(error) {
+    } catch (error) {
         next(error);
     }
 }
@@ -58,14 +58,14 @@ export const getQuizById = async (req,res,next) => {
  * @route POST /api/quizzes/:id/submit
  * @access Private
  */
-export const submitQuiz = async (req,res,next) => {
+export const submitQuiz = async (req, res, next) => {
     try {
         const {answers} = req.body;
 
-        if(!Array.isArray(answers)) {
+        if (!Array.isArray(answers)) {
             return res.status(400).json({
                 success: false,
-                error: "Please provide answer array",
+                error: "Please provide answers as an array.",
                 statusCode: 400
             });
         }
@@ -75,18 +75,18 @@ export const submitQuiz = async (req,res,next) => {
             userId: req.user._id
         });
 
-        if(!quiz) {
+        if (!quiz) {
             return res.status(404).json({
                 success: false,
-                error: "Quiz not found",
+                error: "Quiz not found.",
                 statusCode: 404
             });
         }
 
-        if(quiz.completedAt) {
+        if (quiz.completedAt) {
             return res.status(400).json({
                 success: false,
-                error: "Quiz already completed",
+                error: "Quiz already completed.",
                 statusCode: 400
             });
         }
@@ -97,11 +97,11 @@ export const submitQuiz = async (req,res,next) => {
         answers.forEach(answer => {
             const {questionIndex, selectedAnswer} = answer;
 
-            if(questionIndex < quiz.questions.length) {
+            if (questionIndex < quiz.questions.length) {
                 const question = quiz.questions[questionIndex];
                 const isCorrect = question.correctAnswer === selectedAnswer;
 
-                if(isCorrect) correctCount++;
+                if (isCorrect) correctCount++;
 
                 userAnswers.push({
                     questionIndex,
@@ -111,7 +111,7 @@ export const submitQuiz = async (req,res,next) => {
                 });
             }
         });
-        console.log(userAnswers);
+
         const score = Math.round((correctCount / quiz.totalQuestions) * 100);
 
         quiz.userAnswers = userAnswers;
@@ -132,7 +132,7 @@ export const submitQuiz = async (req,res,next) => {
             },
             message: "Quiz completed successfully"
         });
-    } catch(error) {
+    } catch (error) {
         next(error);
     }
 }
@@ -142,30 +142,30 @@ export const submitQuiz = async (req,res,next) => {
  * @route GET /api/quizzes/:id/results
  * @access Private
  */
-export const getQuizResults = async (req,res,next) => {
+export const getQuizResults = async (req, res, next) => {
     try {
         const quiz = await Quiz.findOne({
             _id: req.params.id,
             userId: req.user._id
         }).populate('documentId', 'title');
 
-        if(!quiz) {
-            res.status(404).json({
+        if (!quiz) {
+            return res.status(404).json({
                 success: false,
-                error: "Quiz not found",
+                error: "Quiz not found.",
                 statusCode: 404
             });
         }
 
-        if(!quiz.completedAt) {
+        if (!quiz.completedAt) {
             return res.status(400).json({
                 success: false,
-                error: "Quiz not completed",
+                error: "Quiz not completed.",
                 statusCode: 400
             });
         }
 
-        const detailedResults = quiz.questions.map((question,index) => {
+        const detailedResults = quiz.questions.map((question, index) => {
             const userAnswer = quiz.userAnswers.find(a => a.questionIndex === index);
             return {
                 questionIndex: index,
@@ -192,7 +192,7 @@ export const getQuizResults = async (req,res,next) => {
                 results: detailedResults
             }
         });
-    } catch(error) {
+    } catch (error) {
         next(error);
     }
 }
@@ -202,17 +202,17 @@ export const getQuizResults = async (req,res,next) => {
  * @route DELETE /api/quizzes/:id
  * @access Private
  */
-export const deleteQuiz = async (req,res,next) => {
+export const deleteQuiz = async (req, res, next) => {
     try {
         const quiz = await Quiz.findOne({
             _id: req.params.id,
             userId: req.user._id
         });
 
-        if(!quiz) {
+        if (!quiz) {
             return res.status(404).json({
                 success: false,
-                error: "Quiz not found",
+                error: "Quiz not found.",
                 statusCode: 404
             });
         }
@@ -221,9 +221,9 @@ export const deleteQuiz = async (req,res,next) => {
 
         res.status(200).json({
             success: true,
-            message: "Quiz deleted successfully"
+            message: "Quiz deleted successfully!"
         });
-    } catch(error) {
+    } catch (error) {
         next(error);
     }
 }

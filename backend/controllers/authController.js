@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { validationResult } from 'express-validator';
 import User from '../models/User.js';
 
 //Generate JWT token
@@ -11,17 +12,27 @@ const generateToken = (id) => {
 // @desc Register new user
 // @route POST /api/auth/register
 // @access Public
-export const register = async ( req,res,next) => {
+export const register = async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            success: false,
+            errors: errors.array(),
+            statusCode: 400
+        });
+    }
+
     try {
         const {username, email, password} = req.body;
 
-        const userExists = await User.findOne({$or: [{email}]});
+        const userExists = await User.findOne({ $or: [{ email }, { username }] });
 
         if(userExists) {
             return res.status(400).json({
                 success: false,
                 error:
-                    userExists.email === email ? "Email already registered" : "Username already taken.",
+                    userExists.email === email ? "Email already registered." : "Username already taken.",
                 statusCode: 400,
             });
         }
@@ -54,22 +65,27 @@ export const register = async ( req,res,next) => {
     }
 };
 
+// @desc Login user
+// @route POST /api/auth/login
+// @access Public
 export const login = async (req,res,next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            success: false,
+            errors: errors.array(),
+            statusCode: 400
+        });
+    }
+
     try {
         const {email, password} = req.body;
-
-        if(!email || !password) {
-            return res.status(400).json({
-                success: false,
-                error: "Please provide email and password",
-                statusCode: 400,
-            });
-        }
 
         const user = await User.findOne({email}).select('+password');
 
         if(!user) {
-            return res.status(400).json({
+            return res.status(401).json({
                 success:false,
                 error: "Invalid credentials!",
                 statusCode:401,
@@ -88,7 +104,7 @@ export const login = async (req,res,next) => {
 
         const token = generateToken(user._id);
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             user: {
                 id: user._id,
@@ -101,6 +117,7 @@ export const login = async (req,res,next) => {
         });
     } catch (error) {
         next(error);
+        return error;
     }
 };
 
@@ -111,7 +128,7 @@ export const getProfile = async (req,res,next) => {
     try {
         const user = await User.findById(req.user._id);
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             data: {
                 id: user._id,
@@ -124,6 +141,7 @@ export const getProfile = async (req,res,next) => {
         });
     } catch (error) {
         next(error);
+        return error;
     }
 };
 

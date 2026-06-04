@@ -60,7 +60,7 @@ export const reviewFlashcard = async (req, res, next) => {
         if(!flashcardSet) {
             return res.status(404).json({
                 success: false,
-                error:'Flashcard set or card not found',
+                error:'Flashcard set or card not found.',
                 statusCode: 404
             });
         }
@@ -70,7 +70,7 @@ export const reviewFlashcard = async (req, res, next) => {
         if(cardIndex === -1) {
             return res.status(404).json({
                 success: false,
-                error: 'Card not found in flashcard set',
+                error: 'Card not found in flashcard set.',
                 statusCode: 404
             });
         }
@@ -105,7 +105,7 @@ export const toggleStarFlashcard = async (req, res, next) => {
         if (!flashcardSet) {
             return res.status(404).json({
                 success: false,
-                error: 'Flashcard set or card not found',
+                error: 'Flashcard set or card not found.',
                 statusCode: 404
             });
         }
@@ -115,7 +115,7 @@ export const toggleStarFlashcard = async (req, res, next) => {
         if(cardIndex === -1) {
             return res.status(404).json({
                 success: false,
-                error: "Card not found in set",
+                error: "Card not found in set.",
                 statusCode: 404
             })
         }
@@ -127,7 +127,7 @@ export const toggleStarFlashcard = async (req, res, next) => {
         res.status(200).json({
             success: true,
             data: flashcardSet,
-            message: `Flashcard ${flashcardSet.cards[cardIndex].isStarred ? 'starred' : 'unstarred'} successfully`,
+            message: `Flashcard ${flashcardSet.cards[cardIndex].isStarred ? 'favorite' : 'unfavorited'} successfully`,
         })
     } catch (error) {
         next(error);
@@ -141,7 +141,6 @@ export const toggleStarFlashcard = async (req, res, next) => {
  **/
 export const deleteFlashcardSet = async (req, res, next) => {
     try {
-        // This assumes 'id' refers to a field in the Flashcard model identifying a set
         const flashcardSet = await Flashcard.findOne({
             _id: req.params.id,
             userId: req.user._id
@@ -150,7 +149,7 @@ export const deleteFlashcardSet = async (req, res, next) => {
         if(!flashcardSet) {
             return res.status(404).json({
                 success: false,
-                error: 'Flashcard set not found',
+                error: 'Flashcard set not found.',
                 statusCode: 404
             });
         }
@@ -159,7 +158,7 @@ export const deleteFlashcardSet = async (req, res, next) => {
 
         res.status(200).json({
             success: true,
-            message: "Flashcard set deleted successfully"
+            message: "Flashcard set deleted successfully!"
         });
     } catch (error) {
         next(error);

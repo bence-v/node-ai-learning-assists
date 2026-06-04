@@ -54,7 +54,7 @@ const QuizTakePage = () => {
                 const selectedAnswer = question.options[optionIndex];
                 return { questionIndex, selectedAnswer };
             });
-            console.log(formattedAnswers);
+
             await quizService.submitQuiz(quizId, formattedAnswers);
             toast.success('Quiz submitted successfully!');
             navigate(`/quizzes/${quizId}/results`);

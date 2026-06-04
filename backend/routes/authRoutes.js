@@ -16,7 +16,7 @@ const registerValidation = [
     body('username')
         .trim()
         .isLength({min:3})
-        .withMessage('Username must be at least 3 characters long'),
+        .withMessage('Username must be at least 3 characters long!'),
     body('email')
         .isEmail()
         .normalizeEmail()
@@ -24,8 +24,9 @@ const registerValidation = [
     body('password')
         .trim()
         .notEmpty()
+        .withMessage('Password must be at least 6 characters long!')
         .isLength({min: 6})
-        .withMessage('Password must be at least 6 characters long')
+        .withMessage('Password must be at least 6 characters long!')
 ];
 
 const loginValidation = [
@@ -36,7 +37,7 @@ const loginValidation = [
     body('password')
         .trim()
         .notEmpty()
-        .withMessage('Password is required')
+        .withMessage('Password is required!')
 ];
 
 // Public routes

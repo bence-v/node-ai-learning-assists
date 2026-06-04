@@ -15,7 +15,7 @@ const protect = async (req,res,next) => {
             if(!req.user) {
                 return res.status(401).json({
                     success: false,
-                    error: 'Not authorized to access this route',
+                    error: 'Not authorized to access this route.',
                     statusCode: 401,
                 });
             }
@@ -27,14 +27,14 @@ const protect = async (req,res,next) => {
             if(error.name === 'TokenExpiredError') {
                 return res.status(401).json({
                     success: false,
-                    error: 'Token has expired',
+                    error: 'Token has expired.',
                     statusCode: 401,
                 });
             }
 
             return res.status(401).json({
                 success: false,
-                error: 'Not authorized token, failed',
+                error: 'Not authorized token, failed.',
                 statusCode: 401,
             });
         }
@@ -43,7 +43,7 @@ const protect = async (req,res,next) => {
     if(!token) {
         return res.status(401).json({
             success: false,
-            error: 'Not authorized, no token',
+            error: 'Not authorized, no token.',
             statusCode: 401,
         });
     }

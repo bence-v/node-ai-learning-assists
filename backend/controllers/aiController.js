@@ -2,8 +2,8 @@ import Document from '../models/Document.js';
 import Flashcard from "../models/Flashcard.js";
 import Quiz from "../models/Quiz.js";
 import ChatHistory from "../models/ChatHistory.js";
-import * as geminiService from "../utils/geminiService.js";
-import {findRelevantChunks} from "../utils/textChunker.js";
+import {geminiService} from "../utils/geminiService.js";
+import {textChunker} from "../utils/textChunker.js";
 
 /**
  * @desc Generate flashcards for a document
@@ -35,6 +35,7 @@ export const generateFlashcards = async (req, res, next) => {
                 statusCode: 404
             });
         }
+
         const cards = await geminiService.generateFlashcards(
             document.extractedText,
             parseInt(count)
@@ -88,7 +89,7 @@ export const generateQuiz = async (req, res, next) => {
         if(!document) {
             return res.status(404).json({
                 success: false,
-                error: 'Document not found',
+                error: 'Document was not found.',
                 statusCode: 404
             });
         }
@@ -108,13 +109,14 @@ export const generateQuiz = async (req, res, next) => {
            score: 0
         });
 
-        res.status(201).json({
+        return res.status(201).json({
             success: true,
             data: quiz,
             message: "Quiz generated successfully"
         });
     } catch(error) {
         next(error);
+        return;
     }
 }
 
@@ -131,7 +133,7 @@ export const generateSummary = async (req, res, next) => {
         if(!documentId) {
             return res.status(400).json({
                 success: false,
-                error: 'Document ID is required',
+                error: 'Document ID is required.',
                 statusCode: 400
             });
         }
@@ -145,21 +147,21 @@ export const generateSummary = async (req, res, next) => {
         if(!document) {
             return res.status(404).json({
                 success: false,
-                error: 'Document not found or not ready',
+                error: 'Document was not found or not ready.',
                 statusCode: 404
             });
         }
 
         const summary = await geminiService.generateSummary(document.extractedText);
 
-        res.status(200).json({
+        res.status(201).json({
             success: true,
             data: {
                 documentId: document._id,
                 title: document.title,
                 summary
             },
-            message: 'Summary generated successfully'
+            message: 'Summary generated successfully.'
         })
     }catch (error) {
         next(error);
@@ -179,7 +181,7 @@ export const chat = async (req, res, next) => {
         if(!documentId || !question) {
             return res.status(400).json({
                 success: false,
-                error: "Please provide documentId and question",
+                error: "Please provide documentId and question.",
                 statusCode: 400
             });
         }
@@ -193,12 +195,12 @@ export const chat = async (req, res, next) => {
         if(!document) {
             return res.status(404).json({
                 success: false,
-                error: 'Document not found or not ready',
+                error: 'Document was not found or not ready.',
                 statusCode: 404
             });
         }
 
-        const relevantChunks = findRelevantChunks(document.chunks, question, 3);
+        const relevantChunks = textChunker.findRelevantChunks(document.chunks, question, 3);
         const chunkIndexes = relevantChunks.map(c => c.chunkIndex);
 
         let chatHistory = await ChatHistory.findOne({
@@ -231,6 +233,7 @@ export const chat = async (req, res, next) => {
         });
 
         await chatHistory.save();
+
         res.status(200).json({
             success: true,
             data: {
@@ -259,7 +262,7 @@ export const explainConcept = async  (req, res, next) => {
         if(!documentId || !concept) {
             return res.status(400).json({
                 success: false,
-                error: 'Please provide documentId and concept',
+                error: 'Please provide documentId and concept.',
                 statusCode: 400
             });
         }
@@ -273,12 +276,12 @@ export const explainConcept = async  (req, res, next) => {
         if(!document) {
             return res.status(404).json({
                 success: false,
-                error: 'Document not found or not ready',
+                error: 'Document was not found or not ready.',
                 statusCode: 404
             });
         }
 
-        const relevantChunks = findRelevantChunks(document.chunks, concept, 3);
+        const relevantChunks = textChunker.findRelevantChunks(document.chunks, concept, 3);
         const context = relevantChunks.map(c => c.content).join('\n\n');
 
         const explanation = await geminiService.explainConcept(concept, context);
@@ -297,14 +300,19 @@ export const explainConcept = async  (req, res, next) => {
     }
 }
 
+/**
+ * @desc Returns the chat history for a document
+ * @route POST /api/ai//chat-history/:documentId
+ * @access Private
+ */
 export const getChatHistory = async (req,res,next) => {
     try {
-        const {documentId } = req.params;
+        const { documentId } = req.params;
 
         if(!documentId) {
             return res.status(400).json({
                 success: false,
-                error: 'Please provide documentId',
+                error: 'Please provide documentId.',
                 statusCode: 400
             });
         }
@@ -318,14 +326,16 @@ export const getChatHistory = async (req,res,next) => {
             return res.status(200).json({
                 success: true,
                 data: [],
-                message: 'No chat history found for this document'
+                message: 'No chat history found for this document.',
+                statusCode: 200
             });
         }
 
         res.status(200).json({
             success: true,
             data: chatHistory.messages,
-            message: "Chat history retrieved successfully"
+            message: "Chat history retrieved successfully.",
+            statusCode: 200
         });
     }catch (error) {
         next(error);

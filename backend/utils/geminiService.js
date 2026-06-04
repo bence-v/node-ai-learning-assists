@@ -16,7 +16,7 @@ const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite"});
  * @param {string} text - Document text
  * @param {number} count - Number of flashcards to generate
  * @returns {Promise<Array<{question: string, answer: string, difficulty: string}>>} */
-export const generateFlashcards = async (text, count = 10) => {
+const generateFlashcards = async (text, count = 10) => {
     const prompt = `Generate exactly ${count} educational flashcards from the following text. Format each flashcard as:
             Q: [Clear, specific question]
             A: [Concise, accurate answer]
@@ -69,7 +69,7 @@ export const generateFlashcards = async (text, count = 10) => {
  * @param {number} numQuestions - Number of questions
  * @returns
  */
-export const generateQuiz = async (text, numQuestions = 5) => {
+const generateQuiz = async (text, numQuestions = 5) => {
     const prompt = `Generate exactly ${numQuestions} multiple choice questions from the following text.
             Format each question as:
             Q: [Question]
@@ -132,7 +132,7 @@ export const generateQuiz = async (text, numQuestions = 5) => {
  * @param {string} text - Document text
  * @returns {Promise<string>}
  */
-export const generateSummary = async (text) => {
+const generateSummary = async (text) => {
     const prompt = `Provide a concise summary of the following text, highlighting the key concepts, main ideas andimportant points.
     Keep the summary clear and structured
     Text:
@@ -157,7 +157,7 @@ export const generateSummary = async (text) => {
  * @param {Array<Object>} chunks - Relevant document chunks
  * @returns {Promise<string>}
  **/
-export const chatWithContext = async (question, chunks) => {
+const chatWithContext = async (question, chunks) => {
 
     const context = chunks.map((c, i) => `[Chunk ${i + 1}]\n${c.content}`).join('\n\n');
 
@@ -188,7 +188,7 @@ export const chatWithContext = async (question, chunks) => {
  * @param {string} context - Relevant context
  * @returns {Promise<string>}
  **/
-export const explainConcept = async (concept, context) => {
+const explainConcept = async (concept, context) => {
     const prompt = `Explain the concept of "${concept}" based on the following context. 
     Provide a clear, educational explanation that's easy to understand.
     Include examples if relevant.
@@ -207,3 +207,5 @@ export const explainConcept = async (concept, context) => {
     }
 
 }
+
+export const geminiService = {generateFlashcards, generateQuiz, generateSummary, chatWithContext, explainConcept};

@@ -38,6 +38,30 @@ This application is built for:
 - **Multer** - Middleware for handling multipart/form-data and PDF file uploads
 - **Custom Text Chunker & PDF Parser** - Utilities for extracting and chunking text from uploaded files to provide accurate AI context
 
+### Testing
+- **Mocha** - Feature-rich test framework for Node.js
+- **Chai** - BDD / TDD assertion library for clear and readable tests
+- **Sinon.JS** - Standalone test spies, stubs, and mocks
+- **Supertest** - High-level abstraction for testing Node.js HTTP servers
+
+## 🧪 Backend API Testing
+
+The backend is equipped with a comprehensive suite of integration and unit tests to ensure API reliability and correctness. These tests are built using **Mocha**, **Chai**, and **Supertest**.
+
+### Running the Tests
+
+To run the test suite locally, navigate to the `backend` directory and execute the following command:
+
+```bash
+npm test
+```
+
+This command will run all test files located in the `backend/test` directory.
+
+### Continuous Integration
+
+All tests are automatically executed on every `push` and `pull request` to the main branches using **GitHub Actions**. This CI pipeline ensures that new changes do not break existing functionality and maintains the overall quality of the codebase.
+
 ## 🛠️ Getting Started
 
 ### Prerequisites
