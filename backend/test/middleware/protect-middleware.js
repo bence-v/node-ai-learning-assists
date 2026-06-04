@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import request from 'supertest';
 import app from '../../app.js';
+import mongoose from 'mongoose';
 
 describe('Route Protection Functional Audit', () => {
     const protectedRoutes = [
@@ -34,6 +35,7 @@ describe('Route Protection Functional Audit', () => {
         {path: '/api/ai/chat-history/1', method: 'post'},
 
     ];
+
     protectedRoutes.forEach(({path, method}) => {
         it(`should return 401 Unauthorized for ${method.toUpperCase()} ${path} when no token is provided`, async () => {
             const response = await request(app)[method](path);
@@ -55,5 +57,9 @@ describe('Route Protection Functional Audit', () => {
             const response = await request(app).post('/api/auth/register');
             expect(response.status).to.not.equal(401);
         });
+    });
+
+    after(async () => {
+        await mongoose.connection.close();
     });
 });

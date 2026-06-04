@@ -1,6 +1,7 @@
 import request from 'supertest';
 import {expect} from 'chai';
 import app from '../../app.js';
+import mongoose from 'mongoose';
 
 describe('Auth Middleware Integration', () => {
     it('should return 400 for the register route for not having a valid username, email, password', async () => {
@@ -35,5 +36,9 @@ describe('Auth Middleware Integration', () => {
         expect(response.body.success).to.be.false;
         expect(response.body.errors[0].msg).to.equal('Please provide a valid email address!');
         expect(response.body.errors[1].msg).to.equal('Password is required!');
+    });
+
+    after(async () => {
+        await mongoose.connection.close();
     });
 });

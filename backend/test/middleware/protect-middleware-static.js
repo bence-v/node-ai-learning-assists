@@ -2,6 +2,7 @@ import fs from 'fs';
 import { expect } from 'chai';
 import path from 'path';
 import {fileURLToPath} from "url";
+import mongoose from 'mongoose';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -42,5 +43,9 @@ describe('Route Protection Security Audit', () => {
                 });
             }
         });
+    });
+
+    after(async () => {
+        await mongoose.connection.close();
     });
 });
