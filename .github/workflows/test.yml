@@ -44,3 +44,14 @@ jobs:
         run: npm test
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+          NODE_ENV: ${{ secrets.NODE_ENV }}
+          PORT: ${{ secrets.PORT }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          JWT_EXPIRE: ${{ secrets.JWT_EXPIRE }}
+          MAX_FILE_SIZE: ${{ secrets.MAX_FILE_SIZE }}
+
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          CLOUDINARY_NAME: ${{ secrets.CLOUDINARY_NAME }}
+          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_SECRET_KEY: ${{ secrets.CLOUDINARY_SECRET_KEY }}
