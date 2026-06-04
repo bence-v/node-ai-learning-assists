@@ -1,21 +1,29 @@
-name: Node.js Mocha CI
+name: Backend Node.js CI
 
 on:
   push:
     branches: [ "master" ]
+    paths:
+      - 'backend/**'
   pull_request:
     branches: [ "master" ]
+    paths:
+      - 'backend/**'
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: ./backend
+
     strategy:
       matrix:
-        node-version: [23.x, 24.x]
+        node-version: [18.x, 20.x]
 
     steps:
-      - name: Checkout master branch
+      - name: Checkout Branch
         uses: actions/checkout@v4
 
       - name: Setup Node.js ${{ matrix.node-version }}
@@ -23,9 +31,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
+          cache-dependency-path: './backend/package-lock.json'
 
-      - name: Install dependencies (npm ci)
+      - name: Install dependencies for backend
         run: npm ci
 
-      - name: Run Mocha tests
+      - name: Run Mocha tests for backend
         run: npm test
